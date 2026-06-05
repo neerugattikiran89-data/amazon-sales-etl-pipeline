@@ -1,14 +1,8 @@
-#Extract(E):
-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import sum, upper
-#Create Spark Session:
-
 spark = SparkSession.builder \
     .appName("ETL-Project") \
     .getOrCreate()
-
-#Read CSV file:
 
 df = spark.read.csv(
     "data/Amazon Sale Report.csv",
@@ -16,13 +10,10 @@ df = spark.read.csv(
     inferSchema=True
 ) 
 
-#Show data
 df.show()
 
-#show schema
 df.printSchema()
 
-#Transform(T)
 print("Total Rows:", df.count())
 
 print(df.columns)
@@ -67,8 +58,6 @@ state_sales = clean_df.groupBy("ship-state") \
     .agg(sum("Amount").alias("total Sales")) 
 
 state_sales.orderBy("Total Sales", ascending=False).show()
-
-#Load(L):
 
 clean_df.toPandas().to_csv(
     "output_clean_orders.csv",
